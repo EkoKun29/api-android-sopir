@@ -20,4 +20,9 @@ class SPK extends Model
         'sopir',
         'rute',
     ];
+
+    public function user(){
+        return $this->belongsTo(User::class);
+    }
 }
+

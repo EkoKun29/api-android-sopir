@@ -4,6 +4,9 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\SPKController;
+use App\Http\Controllers\AbsenBerangkatController;
+use App\Http\Controllers\AbsenPulangController;
+
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -26,6 +29,18 @@ Route::get('spks/{id}', [SPKController::class, 'show']);
 Route::post('spks', [SPKController::class, 'store']);
 Route::put('spks/{id}', [SPKController::class, 'update']);
 Route::delete('spks/{id}', [SPKController::class, 'destroy']);
+
+Route::get('absen-berangkat', [AbsenBerangkatController::class, 'index']);
+Route::get('absen-berangkat/{id}', [AbsenBerangkatController::class, 'show']);
+Route::post('absen-berangkat', [AbsenBerangkatController::class, 'store']);
+Route::put('absen-berangkat/{id}', [AbsenBerangkatController::class, 'update']);
+Route::delete('absen-berangkat/{id}', [AbsenBerangkatController::class, 'destroy']);
+
+Route::get('absen-pulang', [AbsenPulangController::class, 'index']);
+Route::get('absen-pulang/{id}', [AbsenPulangController::class, 'show']);
+Route::post('absen-pulangt', [AbsenPulangController::class, 'store']);
+Route::put('absen-pulang/{id}', [AbsenPulangController::class, 'update']);
+Route::delete('absen-pulang/{id}', [AbsenPulangController::class, 'destroy']);
 
 Route::middleware('auth:sanctum')->group(function(){
     Route::post('/logout',[UserController::class, 'logout']);
