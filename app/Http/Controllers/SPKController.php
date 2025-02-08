@@ -9,6 +9,8 @@ class SPKController extends Controller
 {
     public function store(Request $request)
 {
+    dd($request->all());
+
     $request->validate([
         'tanggal' => 'nullable|date',
         'nama_sales' => 'nullable|string|max:255',
@@ -27,7 +29,7 @@ class SPKController extends Controller
         'nama_sales' => $request->nama_sales,
         'tanggal_muat' => $request->tanggal_muat,
         'hari_jam_keberangkatan' => $request->hari_jam_keberangkatan,
-        'hari_Jam_kepulangan' => $request->hari_jam_kepulangan,
+        'hari_Jam_kepulangan' => $request->hari_Jam_kepulangan,
         'sopir' => $request->sopir,
         'rute' => $request->rute,
         'dropper' => $request->dropper,
