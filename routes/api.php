@@ -26,7 +26,7 @@ Route::post('/auth/login', [UserController::class, 'loginUser']);
 
 Route::get('/spk', [SPKController::class, 'index']);
 Route::get('/spk/{id}', [SPKController::class, 'show']);
-Route::post('/spk', [SPKController::class, 'store']);
+Route::middleware('auth:sanctum')->post('/spk', [SPKController::class, 'store']);
 Route::put('/spk/{id}', [SPKController::class, 'update']);
 Route::delete('/spk/{id}', [SPKController::class, 'destroy']);
 
