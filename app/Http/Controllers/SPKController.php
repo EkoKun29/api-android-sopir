@@ -14,7 +14,7 @@ class SPKController extends Controller
         'nama_sales' => 'nullable|string|max:255',
         'tanggal_muat' => 'nullable|date',
         'hari_jam_keberangkatan' => 'nullable|string|max:255',
-        'hari_jam_kepulangan' => 'nullable|string|max:255',
+        'hari_Jam_kepulangan' => 'nullable|string|max:255',
         'sopir' => 'nullable|string|max:255',
         'rute' => 'nullable|string|max:255',
         'dropper' => 'nullable|string|max:255',
@@ -27,7 +27,7 @@ class SPKController extends Controller
         'nama_sales' => $request->nama_sales,
         'tanggal_muat' => $request->tanggal_muat,
         'hari_jam_keberangkatan' => $request->hari_jam_keberangkatan,
-        'hari_jam_kepulangan' => $request->hari_jam_kepulangan,
+        'hari_Jam_kepulangan' => $request->hari_jam_kepulangan,
         'sopir' => $request->sopir,
         'rute' => $request->rute,
         'dropper' => $request->dropper,
@@ -41,7 +41,7 @@ class SPKController extends Controller
     // Untuk mengambil seluruh data SPKS
     public function index()
     {
-        $spk = SPK::all();
+        $spk = SPK::orderBy('created_at', 'desc')->get();
         return response()->json($spk);
     }
 
