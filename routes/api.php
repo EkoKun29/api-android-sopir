@@ -24,11 +24,11 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::post('/auth/login', [UserController::class, 'loginUser']);
 
-Route::get('spks', [SPKController::class, 'index']);
-Route::get('spks/{id}', [SPKController::class, 'show']);
-Route::post('spks', [SPKController::class, 'store']);
-Route::put('spks/{id}', [SPKController::class, 'update']);
-Route::delete('spks/{id}', [SPKController::class, 'destroy']);
+Route::get('spk', [SPKController::class, 'index']);
+Route::get('spk/{id}', [SPKController::class, 'show']);
+Route::post('spk', [SPKController::class, 'store']);
+Route::put('spk/{id}', [SPKController::class, 'update']);
+Route::delete('spk/{id}', [SPKController::class, 'destroy']);
 
 Route::get('absen-berangkat', [AbsenBerangkatController::class, 'index']);
 Route::get('absen-berangkat/{id}', [AbsenBerangkatController::class, 'show']);

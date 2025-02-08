@@ -12,6 +12,7 @@ class SPK extends Model
     protected $table = 's_p_k_s';
 
     protected $fillable = [
+        'id_user',
         'tanggal',
         'nama_sales',
         'tanggal_muat',
@@ -19,6 +20,8 @@ class SPK extends Model
         'hari_Jam_kepulangan',
         'sopir',
         'rute',
+        'dropper',
+        'keterangan',
     ];
 
     public function user(){

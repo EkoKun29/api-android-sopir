@@ -8,21 +8,35 @@ use App\Models\SPK;
 class SPKController extends Controller
 {
     public function store(Request $request)
-    {
-        $request->validate([
-            'tanggal' => 'nullable|string',
-            'nama_sales' => 'nullable|string',
-            'tanggal_muat' => 'nullable|string',
-            'hari_jam_keberangkatan' => 'nullable|string',
-            'hari_Jam_kepulangan' => 'nullable|string',
-            'sopir' => 'nullable|string',
-            'rute' => 'nullable|string',
-        ]);
+{
+    $request->validate([
+        'tanggal' => 'nullable|date',
+        'nama_sales' => 'nullable|string|max:255',
+        'tanggal_muat' => 'nullable|date',
+        'hari_jam_keberangkatan' => 'nullable|string|max:255',
+        'hari_jam_kepulangan' => 'nullable|string|max:255',
+        'sopir' => 'nullable|string|max:255',
+        'rute' => 'nullable|string|max:255',
+        'dropper' => 'nullable|string|max:255',
+        'keterangan' => 'nullable|string|max:255',
+    ]);
 
-        $spk = SPK::create($request->all());
+    $spk = SPK::create([
+        'id_user' => auth()->id(), // Ambil ID user dari token login
+        'tanggal' => $request->tanggal,
+        'nama_sales' => $request->nama_sales,
+        'tanggal_muat' => $request->tanggal_muat,
+        'hari_jam_keberangkatan' => $request->hari_jam_keberangkatan,
+        'hari_jam_kepulangan' => $request->hari_jam_kepulangan,
+        'sopir' => $request->sopir,
+        'rute' => $request->rute,
+        'dropper' => $request->dropper,
+        'keterangan' => $request->keterangan,
+    ]);
 
-        return response()->json($spk, 201);
-    }
+    return response()->json($spk, 201);
+}
+
 
     // Untuk mengambil seluruh data SPKS
     public function index()
