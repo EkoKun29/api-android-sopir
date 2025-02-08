@@ -19,9 +19,9 @@ class SPKController extends Controller
 
     $spk = SPK::create([
         'id_user' => $user->id, // Ambil ID user dari token login
-        'tanggal' => Carbon::now()->format('d-m-Y'),
+        'tanggal' => Carbon::now()->format('d/m/Y'),
         'nama_sales' => $request->nama_sales,
-        'tanggal_muat' => Carbon::parse($request->tanggal_muat)->format('d-m-Y'),
+        'tanggal_muat' => Carbon::parse($request->tanggal_muat)->format('d/m/Y'),
         'hari_jam_keberangkatan' => $request->hari_jam_keberangkatan,
         'hari_Jam_kepulangan' => $request->hari_Jam_kepulangan,
         'sopir' => $request->sopir,
