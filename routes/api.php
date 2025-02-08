@@ -24,23 +24,23 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::post('/auth/login', [UserController::class, 'loginUser']);
 
-Route::get('spk', [SPKController::class, 'index']);
-Route::get('spk/{id}', [SPKController::class, 'show']);
-Route::post('spk', [SPKController::class, 'store']);
-Route::put('spk/{id}', [SPKController::class, 'update']);
-Route::delete('spk/{id}', [SPKController::class, 'destroy']);
+Route::get('/spk', [SPKController::class, 'index']);
+Route::get('/spk/{id}', [SPKController::class, 'show']);
+Route::post('/spk', [SPKController::class, 'store']);
+Route::put('/spk/{id}', [SPKController::class, 'update']);
+Route::delete('/spk/{id}', [SPKController::class, 'destroy']);
 
-Route::get('absen-berangkat', [AbsenBerangkatController::class, 'index']);
-Route::get('absen-berangkat/{id}', [AbsenBerangkatController::class, 'show']);
-Route::post('absen-berangkat', [AbsenBerangkatController::class, 'store']);
-Route::put('absen-berangkat/{id}', [AbsenBerangkatController::class, 'update']);
-Route::delete('absen-berangkat/{id}', [AbsenBerangkatController::class, 'destroy']);
+Route::get('/absen-berangkat', [AbsenBerangkatController::class, 'index']);
+Route::get('/absen-berangkat/{id}', [AbsenBerangkatController::class, 'show']);
+Route::post('/absen-berangkat', [AbsenBerangkatController::class, 'store']);
+Route::put('/absen-berangkat/{id}', [AbsenBerangkatController::class, 'update']);
+Route::delete('/absen-berangkat/{id}', [AbsenBerangkatController::class, 'destroy']);
 
-Route::get('absen-pulang', [AbsenPulangController::class, 'index']);
-Route::get('absen-pulang/{id}', [AbsenPulangController::class, 'show']);
-Route::post('absen-pulangt', [AbsenPulangController::class, 'store']);
-Route::put('absen-pulang/{id}', [AbsenPulangController::class, 'update']);
-Route::delete('absen-pulang/{id}', [AbsenPulangController::class, 'destroy']);
+Route::get('/absen-pulang', [AbsenPulangController::class, 'index']);
+Route::get('/absen-pulang/{id}', [AbsenPulangController::class, 'show']);
+Route::post('/absen-pulangt', [AbsenPulangController::class, 'store']);
+Route::put('/absen-pulang/{id}', [AbsenPulangController::class, 'update']);
+Route::delete('/absen-pulang/{id}', [AbsenPulangController::class, 'destroy']);
 
 Route::middleware('auth:sanctum')->group(function(){
     Route::post('/logout',[UserController::class, 'logout']);
