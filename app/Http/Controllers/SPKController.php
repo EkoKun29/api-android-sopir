@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\SPK;
 use Illuminate\Support\Facades\Auth;
+use Carbon\Carbon;
 
 class SPKController extends Controller
 {
@@ -18,7 +19,7 @@ class SPKController extends Controller
 
     $spk = SPK::create([
         'id_user' => $user->id, // Ambil ID user dari token login
-        'tanggal' => $request->tanggal,
+        'tanggal' => Carbon::now()->format('d-m-Y'),
         'nama_sales' => $request->nama_sales,
         'tanggal_muat' => $request->tanggal_muat,
         'hari_jam_keberangkatan' => $request->hari_jam_keberangkatan,
