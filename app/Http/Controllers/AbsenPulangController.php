@@ -4,27 +4,40 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\AbsenPulang;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
+use Carbon\Carbon;
 
 class AbsenPulangController extends Controller
 {
     public function store(Request $request)
     {
-        $request->validate([
-            'id_user' => 'nullable|integer',
-            'nama' => 'nullable|string',
-            'jabatan' => 'nullable|string',
-            'face' => 'nullable|string',
-            'tanggal' => 'nullable|string',
-            'jam' => 'nullable|string',
-            'latitude' => 'nullable|decimal|integer',
-            'longitude' => 'nullable|decimal|integer',
-            'lokasi' => 'nullable|string',
-            'uuid' => 'nullable|char|string',
-        ]);
-
-        $absenPulang = AbsenPulang::create($request->all());
-
-        return response()->json($absenPulang, 201);
+        try {
+            $user = Auth::user(); 
+            if (!$user) {
+                return response()->json(['error' => 'User tidak ditemukan'], 401);
+            }
+    
+            Log::info('Data diterima dari Android:', $request->all());
+    
+            $absenPulang = AbsenPulang::create([
+                'id_user' => $user->id,
+                'nama' => $request->nama,
+                'jabatan' => $user->role,
+                'face' => $request->face,
+                'tanggal' => Carbon::now()->format('d/m/Y'),
+                'jam' => Carbon::now()->format('H:i:s'),
+                'latitude' => $request->latitude, 
+                'longitude' => $request->longitude,
+                'lokasi' => $request->lokasi,
+                'uuid' => $request->uuid,
+            ]);
+    
+            return response()->json($absenPulang, 201);
+        } catch (\Exception $e) {
+            Log::error('Gagal menyimpan SPK: ' . $e->getMessage());
+            return response()->json(['error' => 'Gagal menyimpan data', 'message' => $e->getMessage()], 500);
+        }
     }
 
     // Untuk mengambil seluruh data AbsenPulangS
