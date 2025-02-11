@@ -22,7 +22,7 @@ class AbsenPulangController extends Controller
     
             $absenPulang = AbsenPulang::create([
                 'id_user' => $user->id,
-                'nama' => $request->nama,
+                'nama' => $user->nama,
                 'jabatan' => $user->role,
                 'face' => $request->face,
                 'tanggal' => Carbon::now()->format('d/m/Y'),

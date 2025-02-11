@@ -23,7 +23,7 @@ class AbsenBerangkatController extends Controller
     
             $absenBerangkat = AbsenBerangkat::create([
                 'id_user' => $user->id,
-                'nama' => $request->nama,
+                'nama' => $user->nama,
                 'jabatan' => $user->role,
                 'face' => $request->face,
                 'tanggal' => Carbon::now()->format('d/m/Y'),
