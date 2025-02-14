@@ -37,7 +37,7 @@ class AbsenBerangkatController extends Controller
             // Simpan data ke database
             $absenBerangkat = AbsenBerangkat::create([
                 'id_user' => $user->id,
-                'nama' => $user->nama,
+                'nama' => $user->name,
                 'jabatan' => $user->role,
                 'face' => $fileName, // Simpan nama file gambar
                 'tanggal' => Carbon::now()->format('d/m/Y'),
