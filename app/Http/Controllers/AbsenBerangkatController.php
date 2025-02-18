@@ -13,64 +13,55 @@ use Illuminate\Support\Facades\Storage;
 class AbsenBerangkatController extends Controller
 {
     public function store(Request $request)
-    {
-        try {
-            $user = Auth::user(); 
-            if (!$user) {
-                return response()->json(['error' => 'User tidak ditemukan'], 401);
-            }
+{
+    try {
+        $user = Auth::user(); 
+        if (!$user) {
+            return response()->json(['error' => 'User tidak ditemukan'], 401);
+        }
 
-            $imageData = $request->face; 
+        if (!$request->has('uuid') || empty($request->uuid)) {
+            return response()->json(['error' => 'UUID tidak ditemukan dalam request'], 400);
+        }
 
-            // Simpan data ke database
-            // $absenBerangkat = AbsenBerangkat::create([
-            //     'id_user' => $user->id,
-            //     'nama' => $user->name,
-            //     'jabatan' => $user->role,
-            //     $fileName = $request->uuid . '.jpeg', 
-            //     $imagePath = 'public/' . $fileName, 
+        $imageData = $request->face; 
 
-            //     $image = str_replace('data:image/jpeg;base64,', '', $imageData),
-            //     $image = str_replace(' ', '+', $image),
-            //     Storage::put($imagePath, base64_decode($image)),
-            //     'face' => $fileName, 
-            //     'tanggal' => Carbon::now()->format('d/m/Y'),
-            //     'jam' => Carbon::now()->format('H:i:s'),
-            //     'latitude' => $request->latitude, 
-            //     'longitude' => $request->longitude,
-            //     'lokasi' => $request->lokasi,
-            //     'uuid' => Str::uuid(),
-            // ]);
+        // Simpan data ke database
+        $absenBerangkat = new AbsenBerangkat();
+        $absenBerangkat->id_user = $user->id;
+        $absenBerangkat->uuid = $request->uuid; // Pakai UUID dari request
+        $absenBerangkat->nama = $user->name;
+        $absenBerangkat->jabatan = $user->role;
+        $absenBerangkat->tanggal = Carbon::now()->format('d/m/Y');
+        $absenBerangkat->jam = Carbon::now()->format('H:i:s');
+        $absenBerangkat->latitude = $request->latitude;
+        $absenBerangkat->longitude = $request->longitude;
+        $absenBerangkat->lokasi = $request->lokasi;
 
-            $absenBerangkat = new AbsenBerangkat();
-            $absenBerangkat ->id_user = Auth::user()->id;
-            $absenBerangkat->uuid =Str::uuid();
-            $absenBerangkat->nama = Auth::user()->name;
-            $absenBerangkat->jabatan = Auth::user()->role;
-            $absenBerangkat->tanggal = Carbon::now()->format('d/m/Y');
-            $absenBerangkat->jam = Carbon::now()->format('H:i:s');
-            $absenBerangkat->latitude = $request->latitude;
-            $absenBerangkat->longitude = $request->longitude;
-            $absenBerangkat->lokasi = $request->lokasi;
-            $fileName = $absenBerangkat->uuid . '.jpeg'; // Nama file
-            $imagePath = 'public/' . $fileName; // Path untuk disimpan di storage
+        // Buat nama file berdasarkan UUID dari request
+        $fileName = $request->uuid . '.jpeg'; 
+        $imagePath = 'public/absensi/' . $fileName; 
+
+        // Pastikan gambar bukan null
+        if ($imageData) {
             $image = str_replace('data:image/jpeg;base64,', '', $imageData);
             $image = str_replace(' ', '+', $image);
-
-            // Simpan gambar di storage/app/public
-            Storage::put($imagePath, base64_decode($image)); // Simpan gambar
-
-            // Simpan nama file ke database
-            $absenBerangkat->face = $fileName;
-            $absenBerangkat->save();
-
-
-            return response()->json($absenBerangkat, 201);
-        } catch (\Exception $e) {
-            Log::error('Gagal menyimpan SPK: ' . $e->getMessage());
-            return response()->json(['error' => 'Gagal menyimpan data', 'message' => $e->getMessage()], 500);
+            Storage::put($imagePath, base64_decode($image));
+        } else {
+            return response()->json(['error' => 'Gambar tidak ditemukan dalam request'], 400);
         }
+
+        // Simpan nama file ke database
+        $absenBerangkat->face = 'storage/absensi/' . $fileName; 
+        $absenBerangkat->save();
+
+        return response()->json($absenBerangkat, 201);
+    } catch (\Exception $e) {
+        Log::error('Gagal menyimpan data: ' . $e->getMessage());
+        return response()->json(['error' => 'Gagal menyimpan data', 'message' => $e->getMessage()], 500);
     }
+}
+
 
     // Untuk mengambil seluruh data AbsenBerangkatS
     public function index()
