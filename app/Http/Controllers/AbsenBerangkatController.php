@@ -52,7 +52,7 @@ class AbsenBerangkatController extends Controller
             $absenBerangkat->latitude = $request->latitude;
             $absenBerangkat->longitude = $request->longitude;
             $absenBerangkat->lokasi = $request->lokasi;
-            $fileName = $absenBerangkat->uuid . '.png'; // Nama file
+            $fileName = $absenBerangkat->uuid . '.jpeg'; // Nama file
             $imagePath = 'public/' . $fileName; // Path untuk disimpan di storage
             $image = str_replace('data:image/png;base64,', '', $imageData);
             $image = str_replace(' ', '+', $image);
@@ -64,24 +64,6 @@ class AbsenBerangkatController extends Controller
             $absenBerangkat->face = $fileName;
             $absenBerangkat->save();
 
-
-            // $absenBerangkat = AbsenBerangkat::create([
-            //     'id_user' => $user->id,
-            //     'nama' => $user->name,
-            //     'jabatan' => $user->role,
-            //     $fileName = $request->face . '.jpeg', 
-            //     $imagePath = 'public/' . $fileName, 
-            //     $image = str_replace('data:image/jpeg;base64,', '', $imageData),
-            //     $image = str_replace(' ', '+', $image),
-            //     Storage::put($imagePath, base64_decode($image)),
-            //     'face' => $fileName, 
-            //     'tanggal' => Carbon::now()->format('d/m/Y'),
-            //     'jam' => Carbon::now()->format('H:i:s'),
-            //     'latitude' => $request->latitude, 
-            //     'longitude' => $request->longitude,
-            //     'lokasi' => $request->lokasi, // Pastikan request mengirim 'lokasi' dan bukan '$fileName'
-            //     'uuid' => Str::uuid(),
-            // ]);
 
             return response()->json($absenBerangkat, 201);
         } catch (\Exception $e) {
