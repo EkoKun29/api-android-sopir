@@ -7,6 +7,7 @@ use App\Models\AbsenBerangkat;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Carbon\Carbon;
+use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Storage;
 
 class AbsenBerangkatController extends Controller
@@ -19,33 +20,30 @@ class AbsenBerangkatController extends Controller
                 return response()->json(['error' => 'User tidak ditemukan'], 401);
             }
     
-            // Log data yang dikirim
-            Log::info('Data diterima dari Android:', $request->all());
-    
-            // Ambil data gambar dari request
-            $imageData = $request->face; // Ambil base64 string gambar dari request
+        
+            $imageData = $request->face; 
 
-            // Membuat nama file gambar
-            $fileName = $request->uuid . '.jpeg'; // Nama file
-            $imagePath = 'public/' . $fileName; // Path untuk disimpan di storage
-
-            // Hapus prefix data:image/png;base64, dan spasi
-            $image = str_replace('data:image/jpeg;base64,', '', $imageData);
-            $image = str_replace(' ', '+', $image);
-            Storage::put($imagePath, base64_decode($image)); // Simpan gambar
+           
+            
 
             // Simpan data ke database
             $absenBerangkat = AbsenBerangkat::create([
                 'id_user' => $user->id,
                 'nama' => $user->name,
                 'jabatan' => $user->role,
-                'face' => $fileName, // Simpan nama file gambar
+                $fileName = $request->uuid . '.jpeg', 
+                $imagePath = 'public/' . $fileName, 
+
+                $image = str_replace('data:image/jpeg;base64,', '', $imageData),
+                $image = str_replace(' ', '+', $image),
+                Storage::put($imagePath, base64_decode($image)),
+                'face' => $fileName, 
                 'tanggal' => Carbon::now()->format('d/m/Y'),
                 'jam' => Carbon::now()->format('H:i:s'),
                 'latitude' => $request->latitude, 
                 'longitude' => $request->longitude,
                 'lokasi' => $request->lokasi, // Pastikan request mengirim 'lokasi' dan bukan '$fileName'
-                'uuid' => $request->uuid,
+                'uuid' => Str::uuid(),
             ]);
 
             return response()->json($absenBerangkat, 201);
