@@ -40,7 +40,7 @@ class AbsenBerangkatController extends Controller
 
         // Buat nama file berdasarkan UUID dari request
         $fileName = $request->uuid . '.jpeg'; 
-        $imagePath = 'public/absensi/' . $fileName; 
+        $imagePath = 'public/' . $fileName; 
 
         // Pastikan gambar bukan null
         if ($imageData) {
@@ -52,7 +52,7 @@ class AbsenBerangkatController extends Controller
         }
 
         // Simpan nama file ke database
-        $absenBerangkat->face = 'storage/absensi/' . $fileName; 
+        $absenBerangkat->face = $fileName; 
         $absenBerangkat->save();
 
         return response()->json($absenBerangkat, 201);
