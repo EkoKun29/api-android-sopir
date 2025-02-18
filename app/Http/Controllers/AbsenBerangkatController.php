@@ -54,7 +54,7 @@ class AbsenBerangkatController extends Controller
             $absenBerangkat->lokasi = $request->lokasi;
             $fileName = $absenBerangkat->uuid . '.jpeg'; // Nama file
             $imagePath = 'public/' . $fileName; // Path untuk disimpan di storage
-            $image = str_replace('data:image/png;base64,', '', $imageData);
+            $image = str_replace('data:image/jpeg;base64,', '', $imageData);
             $image = str_replace(' ', '+', $image);
 
             // Simpan gambar di storage/app/public
