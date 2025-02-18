@@ -19,21 +19,35 @@ class AbsenBerangkatController extends Controller
             if (!$user) {
                 return response()->json(['error' => 'User tidak ditemukan'], 401);
             }
-    
-        
+
             $imageData = $request->face; 
 
-           
-            
-
             // Simpan data ke database
+            // $absenBerangkat = AbsenBerangkat::create([
+            //     'id_user' => $user->id,
+            //     'nama' => $user->name,
+            //     'jabatan' => $user->role,
+            //     $fileName = $request->uuid . '.jpeg', 
+            //     $imagePath = 'public/' . $fileName, 
+
+            //     $image = str_replace('data:image/jpeg;base64,', '', $imageData),
+            //     $image = str_replace(' ', '+', $image),
+            //     Storage::put($imagePath, base64_decode($image)),
+            //     'face' => $fileName, 
+            //     'tanggal' => Carbon::now()->format('d/m/Y'),
+            //     'jam' => Carbon::now()->format('H:i:s'),
+            //     'latitude' => $request->latitude, 
+            //     'longitude' => $request->longitude,
+            //     'lokasi' => $request->lokasi,
+            //     'uuid' => Str::uuid(),
+            // ]);
+
             $absenBerangkat = AbsenBerangkat::create([
                 'id_user' => $user->id,
                 'nama' => $user->name,
                 'jabatan' => $user->role,
-                $fileName = $request->uuid . '.jpeg', 
+                $fileName = $request->face . '.jpeg', 
                 $imagePath = 'public/' . $fileName, 
-
                 $image = str_replace('data:image/jpeg;base64,', '', $imageData),
                 $image = str_replace(' ', '+', $image),
                 Storage::put($imagePath, base64_decode($image)),
