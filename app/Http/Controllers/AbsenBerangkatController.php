@@ -26,11 +26,11 @@ class AbsenBerangkatController extends Controller
             $imageData = $request->face; // Ambil base64 string gambar dari request
 
             // Membuat nama file gambar
-            $fileName = $request->uuid . '.png'; // Nama file
+            $fileName = $request->uuid . '.jpeg'; // Nama file
             $imagePath = 'public/' . $fileName; // Path untuk disimpan di storage
 
             // Hapus prefix data:image/png;base64, dan spasi
-            $image = str_replace('data:image/png;base64,', '', $imageData);
+            $image = str_replace('data:image/jpeg;base64,', '', $imageData);
             $image = str_replace(' ', '+', $image);
             Storage::put($imagePath, base64_decode($image)); // Simpan gambar
 
