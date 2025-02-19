@@ -71,6 +71,10 @@ class AbsenBerangkatController extends Controller
     }
 }
 
+public function __construct()
+{
+    $this->middleware('auth:sanctum');
+}
 
 
     // Untuk mengambil seluruh data AbsenBerangkatS
