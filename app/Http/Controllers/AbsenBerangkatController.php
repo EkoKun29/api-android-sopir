@@ -16,24 +16,26 @@ class AbsenBerangkatController extends Controller
 {
     try {
         $user = Auth::user();
-        if (!$user) {
-            return response()->json(['error' => 'User tidak ditemukan'], 401);
+
+        if (!$user || $user->role !== 'user') {
+            return response()->json(['message' => 'Akses ditolak!'], 403);
         }
 
-        // Log data yang diterima
-        Log::info('Data diterima dari Android:', $request->all());
+        // Validasi input request
+        $validated = $request->validate([
+            'face' => 'required|string',
+            'latitude' => 'required|numeric',
+            'longitude' => 'required|numeric',
+            'lokasi' => 'required|string',
+        ]);
 
         // Ambil data gambar dari request
-        $imageData = $request->face;
-        if (!$imageData) {
-            return response()->json(['error' => 'Gambar tidak ditemukan'], 400);
-        }
-
+        $imageData = $validated['face'];
         $uuid = $request->uuid ?? Str::uuid()->toString();
         $fileName = $uuid . '.jpeg'; 
         $imagePath = 'public/absensi/' . $fileName;
 
-        // Hapus prefix base64
+        // Decode Base64 Image
         $image = str_replace('data:image/jpeg;base64,', '', $imageData);
         $image = str_replace(' ', '+', $image);
         $decodedImage = base64_decode($image);
@@ -50,21 +52,25 @@ class AbsenBerangkatController extends Controller
             'id_user' => $user->id,
             'nama' => $user->name,
             'jabatan' => $user->role,
-            'face' => $fileName, // Simpan nama file gambar
+            'face' => $fileName, 
             'tanggal' => Carbon::now()->format('d/m/Y'),
             'jam' => Carbon::now()->format('H:i:s'),
-            'latitude' => $request->latitude, 
-            'longitude' => $request->longitude,
-            'lokasi' => $request->lokasi,
-            'uuid' => $uuid, // Gunakan UUID dari request atau generate baru
+            'latitude' => $validated['latitude'], 
+            'longitude' => $validated['longitude'],
+            'lokasi' => $validated['lokasi'],
+            'uuid' => $uuid, 
         ]);
 
         return response()->json(['message' => 'Absen berhasil', 'data' => $absenBerangkat], 201);
+
+    } catch (\Illuminate\Validation\ValidationException $e) {
+        return response()->json(['error' => 'Validasi gagal', 'message' => $e->errors()], 422);
     } catch (\Exception $e) {
         Log::error('Gagal menyimpan absen: ' . $e->getMessage());
         return response()->json(['error' => 'Gagal menyimpan data', 'message' => $e->getMessage()], 500);
     }
 }
+
 
 
     // Untuk mengambil seluruh data AbsenBerangkatS
