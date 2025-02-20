@@ -42,14 +42,21 @@ class SPKController extends Controller
     }
 }
 
-
-
     // Untuk mengambil seluruh data SPKS
-    public function index()
-    {
+    public function index(Request $request)
+{
+
+    $user = $request->user(); 
+
+    if ($user->role === 'operasional') {
         $spk = SPK::orderBy('created_at', 'desc')->get();
-        return response()->json($spk);
+    } else {
+        $spk = SPK::where('dropper', $user->name)->orderBy('created_at', 'desc')->get();
     }
+
+    return response()->json($spk);
+}
+
 
     // Untuk mengambil data berdasarkan ID
     public function show($id)

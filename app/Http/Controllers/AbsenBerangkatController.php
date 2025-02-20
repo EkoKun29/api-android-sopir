@@ -78,11 +78,19 @@ public function __construct()
 
 
     // Untuk mengambil seluruh data AbsenBerangkatS
-    public function index()
-    {
-        $absenBerangkat = AbsenBerangkat::all();
-        return response()->json($absenBerangkat);
+    public function index(Request $request)
+{
+
+    $user = $request->user(); 
+
+    if ($user->role === 'admin') {
+        $absenBerangkat = AbsenBerangkat::orderBy('created_at', 'desc')->get();
+    } else {
+        $absenBerangkat = AbsenBerangkat::where('id_user', $user->id)->orderBy('created_at', 'desc')->get();
     }
+
+    return response()->json($absenBerangkat);
+}
 
     // Untuk mengambil data berdasarkan ID
     public function show($id)
