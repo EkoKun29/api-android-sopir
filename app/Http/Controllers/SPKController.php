@@ -46,12 +46,15 @@ class SPKController extends Controller
     public function index(Request $request)
 {
 
-    $user = $request->user(); 
+    $user = $request->user();
+    $today = now()->startOfDay(); 
 
     if ($user->role === 'operasional') {
         $spk = SPK::orderBy('created_at', 'desc')->get();
     } else {
-        $spk = SPK::where('dropper', $user->name)->orderBy('created_at', 'desc')->get();
+        $startDate = $today; 
+        $endDate = $today->copy()->addDays(2);
+        $spk = SPK::where('dropper', $user->name)->whereBetween('created_at', [$startDate, $endDate])->orderBy('created_at', 'desc')->get();
     }
 
     return response()->json($spk);
