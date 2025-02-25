@@ -46,21 +46,25 @@ class SPKController extends Controller
     public function index(Request $request)
 {
 
-        $user = $request->user();
-        $today = Carbon::now(); // Ambil tanggal hari ini
-        $currentWeek = $today->weekOfMonth; // Minggu keberapa dalam bulan ini
-        $currentMonth = $today->month; // Bulan saat ini
-        $currentYear = $today->year; // Tahun saat ini 
+    $user = $request->user();
+    $today = Carbon::now();
+
+
+    $currentWeek = SPK::whereDate('tanggal_muat', '<=', $today)
+                    ->orderBy('tanggal_muat', 'desc')
+                    ->value('keterangan');
+
+    if (!$currentWeek) {
+    return response()->json([]); 
+    }
 
     if ($user->role === 'operasional') {
         $spk = SPK::orderBy('created_at', 'desc')->get();
     } else {
         $spk = SPK::where('dropper', $user->name)
-            ->whereMonth('tanggal_muat', $currentMonth) // Hanya dari bulan saat ini
-            ->whereYear('tanggal_muat', $currentYear) // Hanya dari tahun saat ini
-            ->whereRaw('WEEK(tanggal_muat, 3) - WEEK(DATE_SUB(tanggal_muat, INTERVAL DAYOFMONTH(tanggal_muat)-1 DAY), 3) + 1 = ?', [$currentWeek]) // Filter minggu saat ini
-            ->orderBy('tanggal_muat', 'asc')
-            ->get();
+        ->where('keterangan', $currentWeek) 
+        ->orderBy('tanggal_muat', 'asc')
+        ->get();
     }
 
     return response()->json($spk);
