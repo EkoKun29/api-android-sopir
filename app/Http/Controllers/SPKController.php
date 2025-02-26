@@ -61,7 +61,7 @@ class SPKController extends Controller
     if ($user->role === 'operasional') {
         $spk = SPK::orderBy('created_at', 'desc')->get();
     } else {
-        $spk = SPK::where('dropper', $user->name)
+        $spk = SPK::where('dropper', $user->name)->where('sopir', $user->name)
         ->where('keterangan', $currentWeek) 
         ->orderBy('tanggal_muat', 'asc')
         ->get();
