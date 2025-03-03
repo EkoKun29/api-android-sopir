@@ -6,7 +6,7 @@ use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\SPKController;
 use App\Http\Controllers\AbsenBerangkatController;
 use App\Http\Controllers\AbsenPulangController;
-use App\Http\Controllers\API\ExportDataController;
+use App\Http\Controllers\Api\ExportDataController;
 
 /*
 |--------------------------------------------------------------------------
