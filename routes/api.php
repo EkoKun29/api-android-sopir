@@ -55,3 +55,5 @@ Route::get('/absen-berangkat/{startDate}/{endDate}',[ExportDataController::class
 
 Route::get('/absen-pulang/{startDate}/{endDate}',[ExportDataController::class, 'absenpulang']);
 
+Route::get('/spk/{startDate}/{endDate}',[ExportDataController::class, 'spk']);
+

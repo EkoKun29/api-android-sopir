@@ -7,6 +7,8 @@ use App\Models\SPK;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Response;
+
 
 class SPKController extends Controller
 {
