@@ -22,6 +22,10 @@ class SPK extends Model
         'rute',
         'dropper',
         'keterangan',
+        'tanggal_keberangkatan',
+        'jam_keberangkatan',
+        'tanggal_kepulangan',
+        'jam_kepulangan',
     ];
 
     public function user(){
