@@ -13,40 +13,103 @@ use Illuminate\Support\Facades\Response;
 class SPKController extends Controller
 {
    
-    public function store(Request $request)
-{
-    try {
-        $user = Auth::user(); 
-        if (!$user) {
-            return response()->json(['error' => 'User tidak ditemukan'], 401);
+//     public function store(Request $request)
+// {
+//     try {
+//         $user = Auth::user(); 
+//         if (!$user) {
+//             return response()->json(['error' => 'User tidak ditemukan'], 401);
+//         }
+
+//         // Log data yang dikirim
+//         Log::info('Data diterima dari Android:', $request->all());
+
+//         $spk = SPK::create([
+//             'id_user' => $user->id,
+//             'tanggal' => Carbon::now()->format('d/m/Y'),
+//             'nama_sales' => $request->nama_sales,
+//             'tanggal_muat' => $request->tanggal_muat, 
+//             'hari_jam_keberangkatan' => $request->hari_jam_keberangkatan,
+//             'hari_Jam_kepulangan' => $request->hari_Jam_kepulangan,
+//             'tanggal_keberangkatan' => $request->tanggal_keberangkatan,
+//             'jam_keberangkatan' => $request->jam_keberangkatan,
+//             'tanggal_kepulangan' => $request->tanggal_kepulangan,
+//             'jam_kepulangan' => $request->jam_kepulangan,
+//             'sopir' => $request->sopir,
+//             'rute' => $request->rute,
+//             'dropper' => $request->dropper,
+//             'keterangan' => $request->keterangan,
+//         ]);
+
+//         return response()->json($spk, 201);
+//     } catch (\Exception $e) {
+//         Log::error('Gagal menyimpan SPK: ' . $e->getMessage());
+//         return response()->json(['error' => 'Gagal menyimpan data', 'message' => $e->getMessage()], 500);
+//     }
+// }
+
+public function store(Request $request)
+    {
+        try {
+            $user = Auth::user(); 
+            if (!$user) {
+                return response()->json(['error' => 'User tidak ditemukan'], 401);
+            }
+
+            // Log data yang dikirim
+            Log::info('Data diterima dari Android:', $request->all());
+
+            // Format hari dan jam keberangkatan
+            $hari_jam_keberangkatan = $this->formatHariJam($request->tanggal_keberangkatan, $request->jam_keberangkatan);
+            $hari_jam_kepulangan = $this->formatHariJam($request->tanggal_kepulangan, $request->jam_kepulangan);
+
+            $spk = SPK::create([
+                'id_user' => $user->id,
+                'tanggal' => Carbon::now()->format('d/m/Y'),
+                'nama_sales' => $request->nama_sales,
+                'tanggal_muat' => $request->tanggal_muat, 
+                'hari_jam_keberangkatan' => $hari_jam_keberangkatan,
+                'hari_Jam_kepulangan' => $hari_jam_kepulangan,
+                'tanggal_keberangkatan' => $request->tanggal_keberangkatan,
+                'jam_keberangkatan' => $request->jam_keberangkatan,
+                'tanggal_kepulangan' => $request->tanggal_kepulangan,
+                'jam_kepulangan' => $request->jam_kepulangan,
+                'sopir' => $request->sopir,
+                'rute' => $request->rute,
+                'dropper' => $request->dropper,
+                'keterangan' => $request->keterangan,
+            ]);
+
+            return response()->json($spk, 201);
+        } catch (\Exception $e) {
+            Log::error('Gagal menyimpan SPK: ' . $e->getMessage());
+            return response()->json(['error' => 'Gagal menyimpan data', 'message' => $e->getMessage()], 500);
+        }
+    }
+
+    // Fungsi untuk mengonversi tanggal dan jam ke format "Selasa 08:00 pagi"
+    private function formatHariJam($tanggal, $jam)
+    {
+        if (!$tanggal || !$jam) {
+            return null; // Jika tidak ada tanggal atau jam, kembalikan null
         }
 
-        // Log data yang dikirim
-        Log::info('Data diterima dari Android:', $request->all());
-
-        $spk = SPK::create([
-            'id_user' => $user->id,
-            'tanggal' => Carbon::now()->format('d/m/Y'),
-            'nama_sales' => $request->nama_sales,
-            'tanggal_muat' => $request->tanggal_muat, 
-            'hari_jam_keberangkatan' => $request->hari_jam_keberangkatan,
-            'hari_Jam_kepulangan' => $request->hari_Jam_kepulangan,
-            'tanggal_keberangkatan' => $request->tanggal_keberangkatan,
-            'jam_keberangkatan' => $request->jam_keberangkatan,
-            'tanggal_kepulangan' => $request->tanggal_kepulangan,
-            'jam_kepulangan' => $request->jam_kepulangan,
-            'sopir' => $request->sopir,
-            'rute' => $request->rute,
-            'dropper' => $request->dropper,
-            'keterangan' => $request->keterangan,
-        ]);
-
-        return response()->json($spk, 201);
-    } catch (\Exception $e) {
-        Log::error('Gagal menyimpan SPK: ' . $e->getMessage());
-        return response()->json(['error' => 'Gagal menyimpan data', 'message' => $e->getMessage()], 500);
+        $dateTime = Carbon::parse("$tanggal $jam")->locale('id');
+        return $dateTime->translatedFormat('l H:i') . ' ' . $this->getWaktuHari($jam);
     }
-}
+
+    // Fungsi menentukan waktu pagi, siang, atau malam
+    private function getWaktuHari($time)
+    {
+        $hour = (int) explode(':', $time)[0]; // Ambil jam dari format HH:mm:ss atau HH:mm
+        if ($hour >= 5 && $hour < 12) {
+            return 'pagi';
+        } elseif ($hour >= 12 && $hour < 18) {
+            return 'siang';
+        } else {
+            return 'malam';
+        }
+    }
 
     // Untuk mengambil seluruh data SPKS
     public function index(Request $request)
@@ -93,16 +156,35 @@ class SPKController extends Controller
 
     // Untuk mengupdate data
     public function update(Request $request, $id)
-    {
+{
+    try {
         $spk = SPK::find($id);
         if (!$spk) {
             return response()->json(['message' => 'Data not found'], 404);
         }
 
+        // Perbarui hanya jika tanggal & jam keberangkatan/kepulangan diberikan
+        if ($request->has(['tanggal_keberangkatan', 'jam_keberangkatan'])) {
+            $request->merge([
+                'hari_jam_keberangkatan' => $this->formatHariJam($request->tanggal_keberangkatan, $request->jam_keberangkatan)
+            ]);
+        }
+
+        if ($request->has(['tanggal_kepulangan', 'jam_kepulangan'])) {
+            $request->merge([
+                'hari_jam_kepulangan' => $this->formatHariJam($request->tanggal_kepulangan, $request->jam_kepulangan)
+            ]);
+        }
+
         $spk->update($request->all());
 
         return response()->json($spk);
+    } catch (\Exception $e) {
+        Log::error('Gagal mengupdate SPK: ' . $e->getMessage());
+        return response()->json(['error' => 'Gagal mengupdate data', 'message' => $e->getMessage()], 500);
     }
+}
+
 
     // Untuk menghapus data
     public function destroy($id)
