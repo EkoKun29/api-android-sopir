@@ -102,9 +102,11 @@ public function store(Request $request)
     private function getWaktuHari($time)
     {
         $hour = (int) explode(':', $time)[0]; // Ambil jam dari format HH:mm:ss atau HH:mm
-        if ($hour >= 5 && $hour < 12) {
+        if ($hour >= 1 && $hour < 12) {
             return 'pagi';
-        } elseif ($hour >= 12 && $hour < 18) {
+        } elseif ($hour >= 12 && $hour < 14) {
+            return 'siang';
+        } elseif ($hour >= 14 && $hour < 17) {
             return 'siang';
         } else {
             return 'malam';
