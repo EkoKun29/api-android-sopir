@@ -96,7 +96,7 @@ public function store(Request $request)
 
     try {
         // Pastikan tanggal dalam format "DD-MM-YYYY" dan jam dalam format "HH:mm:ss"
-        $dateTime = Carbon::createFromFormat('d-m-Y H:i:s', "$tanggal $jam")->locale('id');
+        $dateTime = Carbon::createFromFormat('d/m/Y H:i:s', "$tanggal $jam")->locale('id');
 
         return $dateTime->translatedFormat('l H:i') . ' ' . $this->getWaktuHari($dateTime->format('H:i'));
     } catch (\Exception $e) {
