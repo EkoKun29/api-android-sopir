@@ -107,7 +107,7 @@ public function store(Request $request)
         } elseif ($hour >= 12 && $hour < 14) {
             return 'siang';
         } elseif ($hour >= 14 && $hour < 17) {
-            return 'siang';
+            return 'sore';
         } else {
             return 'malam';
         }
