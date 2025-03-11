@@ -87,7 +87,7 @@ public function store(Request $request)
         }
     }
 
-    // Fungsi untuk mengonversi tanggal dan jam ke format "Selasa 08:00 pagi"
+
     private function formatHariJam($tanggal, $jam)
 {
     if (!$tanggal || !$jam) {
@@ -95,8 +95,8 @@ public function store(Request $request)
     }
 
     try {
-        // Pastikan tanggal dalam format "DD-MM-YYYY" dan jam dalam format "HH:mm:ss"
-        $dateTime = Carbon::createFromFormat('d/m/Y H:i:s', "$tanggal $jam")->locale('id');
+        // Pastikan tanggal dalam format "DD/MM/YYYY" dan jam dalam format "HH:mm"
+        $dateTime = Carbon::createFromFormat('d/m/Y H:i', "$tanggal $jam")->locale('id');
 
         return $dateTime->translatedFormat('l H:i') . ' ' . $this->getWaktuHari($dateTime->format('H:i'));
     } catch (\Exception $e) {
@@ -104,6 +104,7 @@ public function store(Request $request)
         return null; // Jika gagal parsing, kembalikan null
     }
 }
+
 
 
     // Fungsi menentukan waktu pagi, siang, atau malam
