@@ -49,6 +49,13 @@ Route::middleware('auth:sanctum')->group(function() {
     Route::post('/absen-pulang', [AbsenPulangController::class, 'store']);
     Route::put('/absen-pulang/{id}', [AbsenPulangController::class, 'update']);
     Route::delete('/absen-pulang/{id}', [AbsenPulangController::class, 'destroy']);
+
+    // User
+    Route::get('/user', [UserController::class, 'index']);
+    Route::get('/user/{id}', [UserController::class, 'show']);
+    Route::post('/user', [UserController::class, 'store']);
+    Route::put('/user/{id}', [UserController::class, 'update']);
+    Route::delete('/user/{id}', [UserController::class, 'destroy']);
 });
 
 Route::get('/absen-berangkat/{startDate}/{endDate}',[ExportDataController::class, 'absen']);
