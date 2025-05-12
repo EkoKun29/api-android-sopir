@@ -67,12 +67,7 @@ class UserController extends Controller
 
     public function index()
     {
-        $users = User::all();
-        return response()->json([
-            'status' => true,
-            'message' => 'Users Retrieved Successfully',
-            'users' => $users
-        ], 200);
+        return response()->json(User::all(), 200);
     }
 
     public function store(Request $request)
