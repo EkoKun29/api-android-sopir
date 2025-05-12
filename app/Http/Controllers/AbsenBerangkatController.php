@@ -27,6 +27,7 @@ class AbsenBerangkatController extends Controller
             'latitude' => 'required|numeric',
             'longitude' => 'required|numeric',
             'lokasi' => 'required|string',
+            'ket' => 'required|string',
         ]);
 
         // Ambil data gambar dari request
@@ -58,6 +59,7 @@ class AbsenBerangkatController extends Controller
             'latitude' => $validated['latitude'], 
             'longitude' => $validated['longitude'],
             'lokasi' => $validated['lokasi'],
+            'ket' => $validated['ket'],
             'uuid' => $uuid, 
         ]);
 
