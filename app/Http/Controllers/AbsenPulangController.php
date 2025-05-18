@@ -27,7 +27,7 @@ class AbsenPulangController extends Controller
             'latitude' => 'required|numeric',
             'longitude' => 'required|numeric',
             'lokasi' => 'required|string',
-            // 'ket' => 'required|string',
+            'ket' => 'required|string',
         ]);
 
         // Ambil data gambar dari request
@@ -59,7 +59,7 @@ class AbsenPulangController extends Controller
             'latitude' => $validated['latitude'], 
             'longitude' => $validated['longitude'],
             'lokasi' => $validated['lokasi'],
-            // 'ket' => $validated['ket'],
+            'ket' => $validated['ket'],
             'uuid' => $uuid, 
         ]);
 

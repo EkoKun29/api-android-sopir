@@ -22,7 +22,7 @@ class AbsenPulang extends Model
         'longitude',
         'lokasi',
         'uuid',
-        // 'ket',
+        'ket',
     ];
 
     public static function boot() {
