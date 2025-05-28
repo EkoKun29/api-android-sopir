@@ -36,6 +36,13 @@ Route::middleware('auth:sanctum')->group(function() {
     Route::put('/spk/{id}', [SPKController::class, 'update']);
     Route::delete('/spk/{id}', [SPKController::class, 'destroy']);
 
+    // SPK Jember
+    Route::get('/spk-jember', [SPKController::class, 'index']);
+    Route::get('/spk-jember/{id}', [SPKController::class, 'show']);
+    Route::post('/spk-jember', [SPKController::class, 'store']);
+    Route::put('/spk-jember/{id}', [SPKController::class, 'update']);
+    Route::delete('/spk-jember/{id}', [SPKController::class, 'destroy']);
+
     // Absen Berangkat
     Route::get('/absen-berangkat', [AbsenBerangkatController::class, 'index']);
     Route::get('/absen-berangkat/{id}', [AbsenBerangkatController::class, 'show']);
@@ -63,4 +70,8 @@ Route::get('/absen-berangkat/{startDate}/{endDate}',[ExportDataController::class
 Route::get('/absen-pulang/{startDate}/{endDate}',[ExportDataController::class, 'absenpulang']);
 
 Route::get('/spk/{startDate}/{endDate}',[ExportDataController::class, 'spk']);
+
+Route::get('/spk-jember/{startDate}/{endDate}',[ExportDataController::class, 'spkjember']);
+
+
 

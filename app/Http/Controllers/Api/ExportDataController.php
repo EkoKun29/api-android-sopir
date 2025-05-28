@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\AbsenBerangkat;
 use App\Models\AbsenPulang;
 use App\Models\SPK;
+use App\Models\SPKJember;
 use Illuminate\Http\Request;
 
 class ExportDataController extends Controller
@@ -23,5 +24,10 @@ class ExportDataController extends Controller
     public function spk($startDate, $endDate){
         $spk = SPK::whereBetween('created_at', [$startDate, $endDate])->get();
         return response()->json($spk);
+    }
+
+    public function spkjember($startDate, $endDate){
+        $spkjember = SPKJember::whereBetween('created_at', [$startDate, $endDate])->get();
+        return response()->json($spkjember);
     }
 }
