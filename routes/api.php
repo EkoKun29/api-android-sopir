@@ -7,6 +7,7 @@ use App\Http\Controllers\SPKController;
 use App\Http\Controllers\AbsenBerangkatController;
 use App\Http\Controllers\AbsenPulangController;
 use App\Http\Controllers\Api\ExportDataController;
+use App\Http\Controllers\SPKJemberController;
 
 /*
 |--------------------------------------------------------------------------
@@ -37,11 +38,11 @@ Route::middleware('auth:sanctum')->group(function() {
     Route::delete('/spk/{id}', [SPKController::class, 'destroy']);
 
     // SPK Jember
-    Route::get('/spk-jember', [SPKController::class, 'index']);
-    Route::get('/spk-jember/{id}', [SPKController::class, 'show']);
-    Route::post('/spk-jember', [SPKController::class, 'store']);
-    Route::put('/spk-jember/{id}', [SPKController::class, 'update']);
-    Route::delete('/spk-jember/{id}', [SPKController::class, 'destroy']);
+    Route::get('/spk-jember', [SPKJemberController::class, 'index']);
+    Route::get('/spk-jember/{id}', [SPKJemberController::class, 'show']);
+    Route::post('/spk-jember', [SPKJemberController::class, 'store']);
+    Route::put('/spk-jember/{id}', [SPKJemberController::class, 'update']);
+    Route::delete('/spk-jember/{id}', [SPKJemberController::class, 'destroy']);
 
     // Absen Berangkat
     Route::get('/absen-berangkat', [AbsenBerangkatController::class, 'index']);
