@@ -102,7 +102,7 @@ class SPKJemberController extends Controller
     return response()->json([]); 
     }
 
-    if ($user->role === 'operasional') {
+    if ($user->role === 'operasional jember') {
         $spkJember = SPKJember::orderBy('created_at', 'desc')->get();
     } else {
         $spkJember = SPKJember::where(function ($query) use ($user) {
