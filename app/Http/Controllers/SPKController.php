@@ -142,12 +142,13 @@ public function store(Request $request)
         $spk = SPK::orderBy('created_at', 'desc')->get();
     } else {
         $spk = SPK::where(function ($query) use ($user) {
-            $query->where('dropper', $user->name)
-                  ->orWhere('sopir', $user->name);
-        })
-        ->orderBy('created_at', 'desc')
-        ->get();
-    
+                $query->where('dropper', $user->name)
+                      ->orWhere('sopir', $user->name);
+            })
+            ->whereYear('tanggal_muat', $today->year)
+            ->whereMonth('tanggal_muat', $today->month)
+            ->orderBy('created_at', 'desc')
+            ->get();
     }
 
     return response()->json($spk);
