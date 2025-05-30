@@ -141,13 +141,13 @@ public function store(Request $request)
     if ($user->role === 'operasional') {
         $spk = SPK::orderBy('created_at', 'desc')->get();
     } else {
-        $spk = SPK::where(function ($query) use ($user) {
-            $query->where('dropper', $user->name)
-                  ->orWhere('sopir', $user->name);
-        })
-        ->where('keterangan', $currentWeek)
-        ->orderBy('tanggal_muat', 'asc')
-        ->get();
+        $spk = SPK::where('keterangan', $currentWeek)
+            ->where(function ($query) use ($user) {
+                $query->where('dropper', 'like', '%' . $user->name . '%')
+                      ->orWhere('sopir', 'like', '%' . $user->name . '%');
+            })
+            ->orderBy('tanggal_muat', 'asc')
+            ->get();
     
     }
 
