@@ -17,7 +17,7 @@ class AbsenBerangkatController extends Controller
     try {
         $user = Auth::user();
 
-        if (!$user || $user->role !== 'user') {
+        if (!$user || $user->role !== 'user' || $user->role !== 'user jember') {
             return response()->json(['message' => 'Akses ditolak!'], 403);
         }
 
