@@ -49,7 +49,7 @@ class UserController extends Controller
                 'name' => $user->name,
                 'email' => $user->email,
                 'role' => $user->role
-                
+
             ]
         ], 200);
 
@@ -103,8 +103,8 @@ class UserController extends Controller
                     'id' => $user->id,
                     'name' => $user->name,
                     'email' => $user->email,
-                    'role' => $user->role,
-                    'lokasi' => $user->lokasi
+                    'role' => $user->role
+                    // 'lokasi' => $user->lokasi
                 ]
             ], 201);
 
@@ -173,8 +173,8 @@ class UserController extends Controller
                     'id' => $user->id,
                     'name' => $user->name,
                     'email' => $user->email,
-                    'role' => $user->role,
-                    'lokasi' => $user->lokasi
+                    'role' => $user->role
+                    // 'lokasi' => $user->lokasi
                 ]
             ], 200);
 
