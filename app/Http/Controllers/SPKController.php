@@ -130,14 +130,6 @@ public function store(Request $request)
     $today = Carbon::today();
 
 
-    // $currentWeek = SPK::whereDate('tanggal_muat', '<=', $today)
-    //                 ->orderBy('tanggal_muat', 'desc')
-    //                 ->value('keterangan');
-
-    // if (!$currentWeek) {
-    // return response()->json([]); 
-    // }
-
     if ($user->role === 'operasional') {
         $spk = SPK::orderBy('created_at', 'desc')->get();
     } else {

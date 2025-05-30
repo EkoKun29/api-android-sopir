@@ -91,27 +91,23 @@ class SPKJemberController extends Controller
 {
 
     $user = $request->user();
-    $today = Carbon::now();
+    $today = Carbon::today();
 
 
-    $currentWeek = SPKJember::whereDate('tanggal_muat', '<=', $today)
-                    ->orderBy('tanggal_muat', 'desc')
-                    ->value('keterangan');
-
-    if (!$currentWeek) {
-    return response()->json([]); 
-    }
 
     if ($user->role === 'operasional jember') {
         $spkJember = SPKJember::orderBy('created_at', 'desc')->get();
     } else {
-        $spkJember = SPKJember::where(function ($query) use ($user) {
-            $query->where('dropper', $user->name)
-                  ->orWhere('sopir', $user->name);
-        })
-        ->where('keterangan', $currentWeek)
-        ->orderBy('tanggal_muat', 'asc')
-        ->get();
+        $spk = SPKJember::where(function ($query) use ($user) {
+                $query->where('dropper', $user->name)
+                      ->orWhere('sopir', $user->name);
+            })
+            ->whereRaw("STR_TO_DATE(tanggal_muat, '%d/%m/%Y') >= ? AND STR_TO_DATE(tanggal_muat, '%d/%m/%Y') < ?", [
+                $today->copy()->startOfMonth()->toDateString(),
+                $today->copy()->addMonth()->startOfMonth()->toDateString()
+            ])
+            ->orderBy('created_at', 'desc')
+            ->get();
     
     }
 
