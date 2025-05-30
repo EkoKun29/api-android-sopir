@@ -98,7 +98,7 @@ class SPKJemberController extends Controller
     if ($user->role === 'operasional jember') {
         $spkJember = SPKJember::orderBy('created_at', 'desc')->get();
     } else {
-        $spk = SPKJember::where(function ($query) use ($user) {
+        $spkJember = SPKJember::where(function ($query) use ($user) {
                 $query->where('dropper', $user->name)
                       ->orWhere('sopir', $user->name);
             })
