@@ -127,7 +127,7 @@ public function store(Request $request)
 {
 
     $user = $request->user();
-    $today = Carbon::now();
+    $today = Carbon::today();
 
 
     $currentWeek = SPK::whereDate('tanggal_muat', '<=', $today)
