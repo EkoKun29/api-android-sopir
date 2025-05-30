@@ -127,7 +127,7 @@ public function store(Request $request)
 {
 
     $user = $request->user();
-    $today = Carbon::now();
+    $today = Carbon::today();
 
 
     // $currentWeek = SPK::whereDate('tanggal_muat', '<=', $today)
@@ -145,8 +145,10 @@ public function store(Request $request)
                 $query->where('dropper', $user->name)
                       ->orWhere('sopir', $user->name);
             })
-            ->whereYear('tanggal_muat', $today->year)
-            ->whereMonth('tanggal_muat', $today->month)
+            ->whereRaw("STR_TO_DATE(tanggal_muat, '%d/%m/%Y') >= ? AND STR_TO_DATE(tanggal_muat, '%d/%m/%Y') < ?", [
+                $today->copy()->startOfMonth()->toDateString(),
+                $today->copy()->addMonth()->startOfMonth()->toDateString()
+            ])
             ->orderBy('created_at', 'desc')
             ->get();
     }
