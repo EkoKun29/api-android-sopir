@@ -127,31 +127,26 @@ public function store(Request $request)
 {
 
     $user = $request->user();
-    $today = Carbon::today();
+    $today = Carbon::now();
 
-$weekNumber = $today->isoWeek();
-    $year = $today->year;
 
-    // Ambil semua keterangan dari SPK pada minggu ini
-    $currentWeekKeterangan = SPK::whereYear('tanggal_muat', $year)
-        ->whereRaw('WEEK(tanggal_muat, 1) = ?', [$weekNumber])
-        ->pluck('keterangan')
-        ->unique();
+    // $currentWeek = SPK::whereDate('tanggal_muat', '<=', $today)
+    //                 ->orderBy('tanggal_muat', 'desc')
+    //                 ->value('keterangan');
 
-    if ($currentWeekKeterangan->isEmpty()) {
-        return response()->json([]);
-    }
+    // if (!$currentWeek) {
+    // return response()->json([]); 
+    // }
 
     if ($user->role === 'operasional') {
         $spk = SPK::orderBy('created_at', 'desc')->get();
     } else {
         $spk = SPK::where(function ($query) use ($user) {
-                $query->where('dropper', $user->name)
-                      ->orWhere('sopir', $user->name);
-            })
-            ->whereIn('keterangan', $currentWeekKeterangan)
-            ->orderBy('tanggal_muat', 'asc')
-            ->get();
+            $query->where('dropper', $user->name)
+                  ->orWhere('sopir', $user->name);
+        })
+        ->orderBy('created_at', 'desc')
+        ->get();
     
     }
 
