@@ -74,5 +74,7 @@ Route::get('/spk/{startDate}/{endDate}',[ExportDataController::class, 'spk']);
 
 Route::get('/spk-jember/{startDate}/{endDate}',[ExportDataController::class, 'spkjember']);
 
+Route::get('/all-spk/{startDate}/{endDate}', [ExportDataController::class, 'allSpk']);
+
 
 

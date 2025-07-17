@@ -30,4 +30,17 @@ class ExportDataController extends Controller
         $spkjember = SPKJember::whereBetween('created_at', [$startDate, $endDate])->get();
         return response()->json($spkjember);
     }
+
+    public function allSpk($startDate, $endDate)
+{
+    $spk = SPK::whereBetween('created_at', [$startDate, $endDate])->get();
+    $spkjember = SPKJember::whereBetween('created_at', [$startDate, $endDate])->get();
+
+    return response()->json([
+        'spk' => $spk,
+        'spkjember' => $spkjember,
+    ]);
+}
+
+
 }
