@@ -138,9 +138,11 @@ class SPKJemberController extends Controller
             $tanggal = $request->tanggal_keberangkatan ?? $spkJember->tanggal_keberangkatan;
             $jam = $request->jam_keberangkatan ?? $spkJember->jam_keberangkatan;
 
+            if ($tanggal && $jam) {
             $request->merge([
                 'hari_jam_keberangkatan' => $this->formatHariJam($tanggal, $jam)
             ]);
+            }
         }
 
         // Handle kepulangan
@@ -148,9 +150,11 @@ class SPKJemberController extends Controller
             $tanggal = $request->tanggal_kepulangan ?? $spkJember->tanggal_kepulangan;
             $jam = $request->jam_kepulangan ?? $spkJember->jam_kepulangan;
 
-            $request->merge([
-                'hari_jam_kepulangan' => $this->formatHariJam($tanggal, $jam)
-            ]);
+            if ($tanggal && $jam) {
+                $request->merge([
+                    'hari_jam_kepulangan' => $this->formatHariJam($tanggal, $jam)
+                ]);
+            }
         }
 
         $spkJember->update($request->all());

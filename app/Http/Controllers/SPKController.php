@@ -173,9 +173,11 @@ public function store(Request $request)
             $tanggal = $request->tanggal_keberangkatan ?? $spk->tanggal_keberangkatan;
             $jam = $request->jam_keberangkatan ?? $spk->jam_keberangkatan;
 
-            $request->merge([
-                'hari_jam_keberangkatan' => $this->formatHariJam($tanggal, $jam)
-            ]);
+            if ($tanggal && $jam) {
+                $request->merge([
+                    'hari_jam_keberangkatan' => $this->formatHariJam($tanggal, $jam)
+                ]);
+            }
         }
 
         // Handle kepulangan
@@ -183,9 +185,11 @@ public function store(Request $request)
             $tanggal = $request->tanggal_kepulangan ?? $spk->tanggal_kepulangan;
             $jam = $request->jam_kepulangan ?? $spk->jam_kepulangan;
 
-            $request->merge([
-                'hari_jam_kepulangan' => $this->formatHariJam($tanggal, $jam)
-            ]);
+            if ($tanggal && $jam) {
+                $request->merge([
+                    'hari_jam_kepulangan' => $this->formatHariJam($tanggal, $jam)
+                ]);
+            }
         }
 
         $spk->update($request->all());
@@ -196,6 +200,7 @@ public function store(Request $request)
         return response()->json(['error' => 'Gagal mengupdate data', 'message' => $e->getMessage()], 500);
     }
 }
+
 
 
     // Untuk menghapus data
