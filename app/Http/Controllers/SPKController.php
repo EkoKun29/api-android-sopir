@@ -168,16 +168,23 @@ public function store(Request $request)
             return response()->json(['message' => 'Data not found'], 404);
         }
 
-        // Perbarui hanya jika tanggal & jam keberangkatan/kepulangan diberikan
-        if ($request->has(['tanggal_keberangkatan', 'jam_keberangkatan'])) {
+        // Handle keberangkatan
+        if ($request->has('tanggal_keberangkatan') || $request->has('jam_keberangkatan')) {
+            $tanggal = $request->tanggal_keberangkatan ?? $spk->tanggal_keberangkatan;
+            $jam = $request->jam_keberangkatan ?? $spk->jam_keberangkatan;
+
             $request->merge([
-                'hari_jam_keberangkatan' => $this->formatHariJam($request->tanggal_keberangkatan, $request->jam_keberangkatan)
+                'hari_jam_keberangkatan' => $this->formatHariJam($tanggal, $jam)
             ]);
         }
 
-        if ($request->has(['tanggal_kepulangan', 'jam_kepulangan'])) {
+        // Handle kepulangan
+        if ($request->has('tanggal_kepulangan') || $request->has('jam_kepulangan')) {
+            $tanggal = $request->tanggal_kepulangan ?? $spk->tanggal_kepulangan;
+            $jam = $request->jam_kepulangan ?? $spk->jam_kepulangan;
+
             $request->merge([
-                'hari_jam_kepulangan' => $this->formatHariJam($request->tanggal_kepulangan, $request->jam_kepulangan)
+                'hari_jam_kepulangan' => $this->formatHariJam($tanggal, $jam)
             ]);
         }
 
