@@ -187,7 +187,7 @@ public function store(Request $request)
 
             if ($tanggal && $jam) {
                 $request->merge([
-                    'hari_jam_kepulangan' => $this->formatHariJam($tanggal, $jam)
+                    'hari_Jam_kepulangan' => $this->formatHariJam($tanggal, $jam)
                 ]);
             }
         }
